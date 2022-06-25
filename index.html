@@ -1,11 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>DBR</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css\index.css">
+    <title>DBR</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.0/nouislider.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.0/nouislider.min.js"></script>
 </head>
+
 <body>
-	
+    <section class="section">
+        <div class="container">
+            <div class="range__slider">
+                <div id="range"></div> <!-- элемент слайдера диапазона -->
+            </div>
+            <div class="range__values">
+                <input id="min" type="text" /> <!-- меньшее установленное значение -->
+                <input id="max" type="text" /> <!-- большее установленное значение -->
+            </div>
+            <div class="out">
+                <div class="out__item">
+                    <div class="out__id">1</div>
+                    <div class="out__name">222</div>
+                    <div class="out__level">333</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+
+    const obj = [
+        { 'id': 1, 'name': 'Ivan', 'level': 25 },
+        { 'id': 2, 'name': 'Serg', 'level': 33 },
+        { 'id': 3, 'name': 'Lola', 'level': 50 },
+        { 'id': 4, 'name': 'Klava', 'level': 75 },
+        { 'id': 5, 'name': 'Fedor', 'level': 60 },
+    ]
+
+    var range = document.getElementById('range');
+
+    const inputMin = document.getElementById('min'); // Ищем input с меньшим значнием
+    const inputMax = document.getElementById('max'); // Ищем input с большим значнием
+
+    // if (!range || !inputMin || !inputMax) return // если этих элементов нет, прекращаем выполнение функции, чтобы не было ошибок
+
+    const inputs = [inputMin, inputMax]; // создаем массив из меньшего и большего значения
+
+    noUiSlider.create(range, {
+        start: [20, 80],
+        connect: true,
+        range: {
+            'min': 0,
+            'max': 100
+        },
+        step: 1,
+    });
+
+    range.noUiSlider.on('update', function(values, handle) { // при изменений положения элементов управления слайдера изменяем соответствующие значения
+        inputs[handle].value = parseInt(values[handle]);
+        filterObj(inputs[0].value, inputs[1].value, draw)
+    });
+
+    inputMin.addEventListener('change', function() { // при изменении меньшего значения в input - меняем положение соответствующего элемента управления
+        range.noUiSlider.set([this.value, null]);
+    });
+
+    inputMax.addEventListener('change', function() { // при изменении большего значения в input - меняем положение соответствующего элемента управления
+        range.noUiSlider.set([null, this.value]);
+    });
+
+    // Вывод объекта с фильтром
+
+    function filterObj(min, max, callback) {
+        // console.log(callback)
+        arr = obj.filter(item => {
+            if (item.level >= min && item.level <= max) {
+                return item
+            }
+        })
+        callback(arr)
+    }
+
+    function draw(arr) {
+        const out = document.querySelector('.out');
+        out.innerHTML = ''
+        arr.forEach(item => {
+            out.innerHTML += `
+            <div class="out__item">
+                    <div class="out__id">${item.id}</div>
+                    <div class="out__name">${item.name}</div>
+                    <div class="out__level">${item.level}</div>
+                </div>
+            `
+        })
+    }
+    </script>
 </body>
+
 </html>

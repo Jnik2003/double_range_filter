@@ -1,0 +1,27 @@
+.section{
+max-width: 100%;
+
+}
+.container{
+    max-width: 1280px;
+     margin: 0 auto;
+}
+.range__slider{
+    margin-top: 100px;
+    margin-bottom: 40px;
+}
+.out{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 50px;
+    gap:  20px;
+}
+.out__item{
+    width: calc(1/5*100%);
+    display:  flex;
+    flex-direction: column;
+    height: 100px;
+    justify-content: space-around;
+    align-items: center;
+    border: 1px solid green;
+}
